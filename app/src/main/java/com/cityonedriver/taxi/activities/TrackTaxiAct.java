@@ -123,7 +123,7 @@ public class TrackTaxiAct extends AppCompatActivity
         
     }
 
-//    BroadcastReceiver locationReciever = new BroadcastReceiver() {
+    //    BroadcastReceiver locationReciever = new BroadcastReceiver() {
 //        @Override
 //        public void onReceive(Context context, Intent intent) {
 //            if(intent.getStringExtra("lat") != null) {

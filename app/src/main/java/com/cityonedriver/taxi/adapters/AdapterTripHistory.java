@@ -29,7 +29,7 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
     ArrayList<ModelTripHistory.Result> tripHisList;
     String status;
 
-    public AdapterTripHistory(Context mContext, ArrayList<ModelTripHistory.Result> tripHisList,String status) {
+    public AdapterTripHistory(Context mContext,ArrayList<ModelTripHistory.Result> tripHisList,String status) {
         this.mContext = mContext;
         this.tripHisList = tripHisList;
         this.status = status;

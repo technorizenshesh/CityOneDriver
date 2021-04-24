@@ -78,7 +78,7 @@
                             android:layout_width="@dimen/_80sdp"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12sdp"
-                            app:on="true"
+                            app:on="false"
                             android:padding="@dimen/_10sdp"
                             app:textOn="Online"
                             app:textOff="Offline"

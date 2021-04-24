@@ -86,6 +86,10 @@ public interface Api {
     Call<ResponseBody> acceptStoreApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("update_online_status")
+    Call<ResponseBody> onlineOfflineStatusApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("accept_and_cancel_driver")
     Call<ResponseBody> driverShipStatusChangeApiCall(@FieldMap Map<String,String> params);
 

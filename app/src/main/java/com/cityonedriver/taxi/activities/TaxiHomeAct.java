@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
-
 import android.Manifest;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -17,19 +16,20 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.service.autofill.FillEventHistory;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.cityonedriver.LoginActivity;
 import com.cityonedriver.R;
 import com.cityonedriver.databinding.ActivityTaxiHomeBinding;
 import com.cityonedriver.models.ModelLogin;
+import com.cityonedriver.utils.Api;
+import com.cityonedriver.utils.ApiFactory;
 import com.cityonedriver.utils.AppConstant;
 import com.cityonedriver.utils.ProjectUtil;
 import com.cityonedriver.utils.SharedPref;
 import com.cityonedriver.utils.dialog.NewRequestDialog;
+import com.github.angads25.toggle.LabeledSwitch;
+import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -47,7 +47,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
+import org.json.JSONObject;
+import java.util.HashMap;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 public class TaxiHomeAct extends
@@ -93,7 +98,64 @@ public class TaxiHomeAct extends
         }
     };
 
+    private void onlineOfflineStatus(String status) {
+        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        HashMap<String,String> param = new HashMap<>();
+        param.put("user_id",modelLogin.getResult().getId());
+        param.put("status",status);
+
+        Call<ResponseBody> call = api.onlineOfflineStatusApiCall(param);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("xjgxkjdgvxsd","response = " + response);
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    if(jsonObject.getString("status").equals("1")) {
+                        if(status.equals("online")) {
+                            binding.switch4.setOn(true);
+                        } else {
+                            binding.switch4.setOn(false);
+                        }
+                    } else {
+
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception","Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+                Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("onFailure","onFailure = " + t.getMessage());
+            }
+        });
+    }
+
     private void init() {
+
+        onlineOfflineStatus("online");
+
+        binding.switch4.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
+                if(isOn) {
+                    onlineOfflineStatus("online");
+                } else {
+                    onlineOfflineStatus("offline");
+                }
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

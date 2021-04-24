@@ -114,7 +114,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         Intent intent = new Intent("devship");
                         sendBroadcast(intent);
                     }
-
                     callShippingWhenNotifyClicked(status,shipId,msg);
 
                 } else if("New Booking Request".equals(key)) {
@@ -122,15 +121,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         title = "New Booking Request";
                         Intent intent1 = new Intent("Job_Status_Action");
                         Log.e("SendData=====", jsonObject.toString());
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent1.putExtra("object", jsonObject.toString());
                         sendBroadcast(intent1);
                         calltaxiStatusClicked(title,"New Taxi Booking Request",jsonObject.toString(),"");
                     } else if(status.equals("Cancel_by_user")) {
                         Intent intent1 = new Intent("cancel_by_user");
                         Log.e("SendData=====", jsonObject.toString());
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent1.putExtra("object", jsonObject.toString());
                         sendBroadcast(intent1);
-                        calltaxiStatusClicked(title,"New Taxi Booking Request",jsonObject.toString(),"Cancel_by_user");
+                        calltaxiStatusClicked(title,"Trip cancelled by user",jsonObject.toString(),"Cancel_by_user");
                     }
                 }
 
