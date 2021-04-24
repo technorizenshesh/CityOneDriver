@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/purple_700">
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:src="@drawable/back_white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="@string/fill_car_details"
+                    android:textAllCaps="false"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="bold" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    app:civ_border_width="@dimen/_1sdp"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/default_profile_icon"/>
+
+                <TextView
+                    android:id="@+id/tvLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="@string/logout"
+                    android:visibility="gone"
+                    android:textAllCaps="false"
+                    android:background="@drawable/light_orange_back_5"
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_20sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/upload_car_image"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/poppins_bold"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textStyle="bold"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/_15sdp"/>
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivCarImage"
+                        android:scaleType="fitXY"
+                        app:riv_border_color="@color/black"
+                        app:riv_border_width="@dimen/_1sdp"
+                        app:riv_corner_radius="@dimen/_10sdp"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:src="@drawable/add_car_hint"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="@dimen/_150sdp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_20sdp">
+
+                        <EditText
+                            android:id="@+id/etCarModel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/car_model"
+                            android:textSize="@dimen/_10sdp"
+                            android:inputType="textVisiblePassword"
+                            android:fontFamily="@font/poppins_regular"
+                            android:singleLine="true"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:padding="@dimen/_10sdp"
+                            android:background="@null"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_20sdp">
+
+                        <EditText
+                            android:id="@+id/etCarNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/car_number"
+                            android:textSize="@dimen/_10sdp"
+                            android:inputType="textVisiblePassword"
+                            android:fontFamily="@font/poppins_regular"
+                            android:singleLine="true"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:padding="@dimen/_10sdp"
+                            android:background="@null"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_20sdp">
+
+                        <EditText
+                            android:id="@+id/etCarBrand"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/car_brand"
+                            android:textSize="@dimen/_10sdp"
+                            android:inputType="textVisiblePassword"
+                            android:fontFamily="@font/poppins_regular"
+                            android:singleLine="true"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:padding="@dimen/_10sdp"
+                            android:background="@null"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_20sdp">
+
+                        <Spinner
+                            android:id="@+id/spYearOfMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/manufactured_year"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_car_type"
+                        android:fontFamily="@font/poppins_bold"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/_15sdp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/_10sdp"
+                        app:cardCornerRadius="@dimen/_5sdp"
+                        app:contentPadding="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_20sdp">
+
+                        <Spinner
+                            android:id="@+id/spCarTypes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/driver_type"/>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btSubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/orange_back_10"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_bold"
+                        android:layout_marginLeft="@dimen/_40sdp"
+                        android:layout_marginRight="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:text="@string/submit" />
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</layout>

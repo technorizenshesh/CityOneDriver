@@ -21,6 +21,8 @@ import com.cityonedriver.databinding.ActivityVerifyOtpBinding;
 import com.cityonedriver.models.ModelLogin;
 import com.cityonedriver.shipping.activities.ShipReqActivity;
 import com.cityonedriver.stores.activities.StoreOrdersActivity;
+import com.cityonedriver.taxi.activities.AddCarAct;
+import com.cityonedriver.taxi.activities.TaxiHomeAct;
 import com.cityonedriver.utils.AppConstant;
 import com.cityonedriver.utils.MyService;
 import com.cityonedriver.utils.ProjectUtil;
@@ -177,6 +179,8 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
         AndroidNetworking.initialize(getApplicationContext(),okHttpClient);
 
+        Log.e("fsfdsfdsfs","paramHash = " + paramHash);
+
         ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
         AndroidNetworking.upload(AppConstant.BASE_URL + "signup")
                 .addMultipartParameter(paramHash)
@@ -208,8 +212,9 @@ public class VerifyOtpActivity extends AppCompatActivity {
                                 } else if(AppConstant.SH_DRIVER.equals(modelLogin.getResult().getType())) {
                                     startActivity(new Intent(mContext, ShipReqActivity.class));
                                     finish();
-                                } else {
-
+                                } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
+                                    startActivity(new Intent(mContext, AddCarAct.class));
+                                    finish();
                                 }
                             } else {
                                 // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();

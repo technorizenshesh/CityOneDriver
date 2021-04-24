@@ -15,6 +15,7 @@ import com.cityonedriver.R;
 import com.cityonedriver.SplashActivity;
 import com.cityonedriver.shipping.activities.MyDeliveryShipActivity;
 import com.cityonedriver.shipping.activities.ShipChatingActivity;
+import com.cityonedriver.taxi.activities.TaxiHomeAct;
 import com.cityonedriver.utils.AppConstant;
 import com.cityonedriver.utils.SharedPref;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -116,10 +117,56 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     callShippingWhenNotifyClicked(status,shipId,msg);
 
+                } else if("New Booking Request".equals(key)) {
+                    if(status.equals("Pending")) {
+                        title = "New Booking Request";
+                        Intent intent1 = new Intent("Job_Status_Action");
+                        Log.e("SendData=====", jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"New Taxi Booking Request",jsonObject.toString(),"");
+                    } else if(status.equals("Cancel_by_user")) {
+                        Intent intent1 = new Intent("cancel_by_user");
+                        Log.e("SendData=====", jsonObject.toString());
+                        intent1.putExtra("object", jsonObject.toString());
+                        sendBroadcast(intent1);
+                        calltaxiStatusClicked(title,"New Taxi Booking Request",jsonObject.toString(),"Cancel_by_user");
+                    }
                 }
+
             }
         }
 
+    }
+
+    private void calltaxiStatusClicked(String title,String msg,String data,String status) {
+        intent = new Intent(this, TaxiHomeAct.class);
+        intent.putExtra("object", data);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        String channelId = "1";
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setSmallIcon(R.drawable.app_icon)
+                .setContentTitle(getString(R.string.app_name))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentText(msg)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Channel human readable title
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Cloud Messaging Service",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager.notify(getNotificationId(), notificationBuilder.build());
     }
 
     private void callShippingWhenNotifyClicked(String status,String shipId,String msg) {

@@ -102,16 +102,43 @@ public interface Api {
     Call<ResponseBody> addBidApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("get_running_booking_user")
+    Call<ResponseBody> getActiveBooking(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_booking_history")
+    Call<ResponseBody> getFinishedBooking(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_bid")
     Call<ResponseBody> getBidApiCall(@FieldMap Map<String,String> params);
+
+    @POST("car_list")
+    Call<ResponseBody> getCarTypesApi();
+
+    @FormUrlEncoded
+    @POST("get_booking_details")
+    Call<ResponseBody> bookingDetails(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("insert_chat")
     Call<ResponseBody> insertChatApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("driver_accept_and_Cancel_request")
+    Call<ResponseBody>  acceptCancelRequestForTaxi(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("get_chat")
     Call<ResponseBody> getAllMessagesCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("insert_chat_booking")
+    Call<ResponseBody> insertChatBookingCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_chat_booking")
+    Call<ResponseBody> getChatBookingCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("delete_bid")

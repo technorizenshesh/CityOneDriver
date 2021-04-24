@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.cityonedriver.models.ModelLogin;
 import com.cityonedriver.shipping.activities.ShipReqActivity;
 import com.cityonedriver.stores.activities.StoreOrdersActivity;
+import com.cityonedriver.taxi.activities.AddCarAct;
+import com.cityonedriver.taxi.activities.TaxiHomeAct;
 import com.cityonedriver.utils.AppConstant;
 import com.cityonedriver.utils.InternetConnection;
 import com.cityonedriver.utils.MyService;
@@ -101,13 +103,22 @@ public class SplashActivity extends AppCompatActivity implements
             public void run() {
                 if(sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
                     modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
-                    ContextCompat.startForegroundService(mContext,new Intent(getApplicationContext(), MyService.class));
+                    ContextCompat.startForegroundService(mContext,new Intent(getApplicationContext(),
+                            MyService.class));
                     if(AppConstant.RES_DRIVER.equals(modelLogin.getResult().getType())) {
                         startActivity(new Intent(mContext, StoreOrdersActivity.class));
                         finish();
                     } else if(AppConstant.SH_DRIVER.equals(modelLogin.getResult().getType())) {
                         startActivity(new Intent(mContext, ShipReqActivity.class));
                         finish();
+                    } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
+                        if("0".equals(modelLogin.getResult().getCar_type_id())) {
+                            startActivity(new Intent(mContext, AddCarAct.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(mContext, TaxiHomeAct.class));
+                            finish();
+                        }
                     }
                 } else {
                     startActivity(new Intent(mContext,WelcomeActivity.class));

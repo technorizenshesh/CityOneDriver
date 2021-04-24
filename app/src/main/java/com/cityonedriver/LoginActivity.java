@@ -16,6 +16,8 @@ import com.cityonedriver.databinding.ActivityLoginBinding;
 import com.cityonedriver.models.ModelLogin;
 import com.cityonedriver.shipping.activities.ShipReqActivity;
 import com.cityonedriver.stores.activities.StoreOrdersActivity;
+import com.cityonedriver.taxi.activities.AddCarAct;
+import com.cityonedriver.taxi.activities.TaxiHomeAct;
 import com.cityonedriver.utils.Api;
 import com.cityonedriver.utils.ApiFactory;
 import com.cityonedriver.utils.AppConstant;
@@ -127,6 +129,14 @@ public class LoginActivity extends AppCompatActivity {
                         } else if(AppConstant.SH_DRIVER.equals(modelLogin.getResult().getType())) {
                             startActivity(new Intent(mContext, ShipReqActivity.class));
                             finish();
+                        } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
+                            if("0".equals(modelLogin.getResult().getCar_type_id())) {
+                                startActivity(new Intent(mContext, AddCarAct.class));
+                                finish();
+                            } else {
+                                startActivity(new Intent(mContext, TaxiHomeAct.class));
+                                finish();
+                            }
                         } else {
                             Toast.makeText(LoginActivity.this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
                         }

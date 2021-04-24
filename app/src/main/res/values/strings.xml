@@ -87,6 +87,13 @@
     <string name="go_to_cart">Go to cart</string>
     <string name="checkout">Checkout</string>
     <string name="sub_total">Sub total</string>
+    <string name="slide_to_begin_trip">Slide to begin Trip</string>
+    <string name="slide_to_end_trip">Slide to End Trip</string>
+    <string name="pick_up_passenger">Pick Up Passenger</string>
+    <string name="are_you_sure_you_have_arrived_at_pickup_location_of_passenger">Are you sure you have arrived at pickup location of passenger?</string>
+    <string name="payment_summary">Payment Summary</string>
+    <string name="trip_complete">Trip Complete</string>
+    <string name="current_trip_is_succesfully_visit_again">Current trip is succesfully finished. Visit again.</string>
     <string name="summary">Summary</string>
     <string name="dev_charges">Delivery fee</string>
     <string name="to_pay">Total pay</string>
@@ -275,7 +282,33 @@
         <item>Select Driver Type</item>
         <item>Store Driver</item>
         <item>Shipping Driver</item>
-        <!--        <item>Taxi Driver</item>-->
+        <item>Taxi Driver</item>
+    </string-array>
+
+    <string-array name="manufactured_year">
+        <item>Select Manufactured Year</item>
+        <item>2021</item>
+        <item>2020</item>
+        <item>2019</item>
+        <item>2018</item>
+        <item>2017</item>
+        <item>2016</item>
+        <item>2015</item>
+        <item>2014</item>
+        <item>2013</item>
+        <item>2012</item>
+        <item>2011</item>
+        <item>2010</item>
+        <item>2009</item>
+        <item>2008</item>
+        <item>2007</item>
+        <item>2006</item>
+        <item>2005</item>
+        <item>2004</item>
+        <item>2003</item>
+        <item>2002</item>
+        <item>2001</item>
+        <item>2000</item>
     </string-array>
 
     <string-array name="vehicles">
@@ -310,6 +343,7 @@
     <string name="update_your_dev_status_here">Update Your Delivery Status Here : </string>
     <string name="you_are_not_allowed_to_see_other_bids">You are not allowed to see other bids</string>
     <string name="my_transport">My Transports</string>
+    <string name="trip_history">Trip History</string>
     <string name="chat">Chat</string>
     <string name="pickup">Pickup</string>
     <string name="type_a_message">Type a message</string>
@@ -318,5 +352,33 @@
     <string name="please_write_a_message">Please write a message</string>
     <string name="update_pickup_text">Update when you pickup the parcel : </string>
     <string name="update_delivered_text">Update when you delivered the parcel : </string>
+    <string name="change">Change</string>
+    <string name="upload_car_image">Upload car image</string>
+    <string name="car_details">Car Details</string>
+    <string name="car_model">Car Model</string>
+    <string name="select_car_type">Select car type</string>
+    <string name="car_brand">Car Brand</string>
+    <string name="car_number">Car Number</string>
+    <string name="fill_car_details">Fill Car Details</string>
+    <string name="please_upload_car_image">Please upload car image</string>
+    <string name="all_fields_are_mandatory">All fields are mandatory</string>
+    <string name="please_select_manufactured_year">Please select manufactured year</string>
+    <string name="refuse">Refuse</string>
+    <string name="location_of_taken_in_charge">location of taken in charge</string>
+    <string name="destination_address">Destination Location</string>
+    <string name="fare">Fare</string>
+    <string name="duration">Duration</string>
+    <string name="navigate">Navigate</string>
+    <string name="arrived">Arrived</string>
+    <string name="track">Track</string>
+    <string name="req_cancelled">Request Cancelled</string>
+    <string name="network_failure">Network Failure</string>
+    <string name="no_trip_avail">No Trip Available</string>
+    <string name="are_your_sure_you_want_to_cancel_the_trip">Are you sure you want to cancel the trip ?</string>
+    <string name="trip_payment">Trip Payment</string>
+    <string name="estimated_trip_cost">Estimated Trip Cost</string>
+    <string name="ok">Ok</string>
+    <string name="see_pay_summ">See Payment Summary</string>
+    <string name="cancel_by_user">Cancelled by user</string>
 
 </resources>

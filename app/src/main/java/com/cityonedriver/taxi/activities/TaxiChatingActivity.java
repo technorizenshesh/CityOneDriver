@@ -1,16 +1,18 @@
-package com.cityonedriver.shipping.activities;
+package com.cityonedriver.taxi.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Toast;
+
 import com.cityonedriver.R;
-import com.cityonedriver.databinding.ActivityShipChatingBinding;
+import com.cityonedriver.databinding.ActivityTaxiChatingBinding;
 import com.cityonedriver.shipping.adapters.AdapterChating;
 import com.cityonedriver.shipping.models.ModelChating;
 import com.cityonedriver.utils.Api;
@@ -18,47 +20,47 @@ import com.cityonedriver.utils.ApiFactory;
 import com.cityonedriver.utils.BottomReachedInterface;
 import com.cityonedriver.utils.ProjectUtil;
 import com.google.gson.Gson;
+
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShipChatingActivity
-        extends AppCompatActivity
-        implements BottomReachedInterface {
+public class TaxiChatingActivity extends AppCompatActivity implements BottomReachedInterface {
 
-    Context mContext = ShipChatingActivity.this;
-    ActivityShipChatingBinding binding;
-    String senderId = "",receiverId = "",receiverName = "";
+    Context mContext = TaxiChatingActivity.this;
+    ActivityTaxiChatingBinding binding;
+    String senderId = "",receiverId = "",receiverName = "",requestId="";
     Timer timer = new Timer();
     boolean isBottom;
-    ModelChating modelAllchats;
+    ModelChating modelAllchats = null;
     String timezoneID = TimeZone.getDefault().getID();
     AdapterChating adapterChating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_ship_chating);
-
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_taxi_chating);
         senderId = getIntent().getStringExtra("sender_id");
         receiverId = getIntent().getStringExtra("receiver_id");
         receiverName = getIntent().getStringExtra("name");
-
-        Log.e("fdsfssdfsddf","senderId = " + senderId);
-        Log.e("fdsfssdfsddf","receiverId = " + receiverId);
-        Log.e("receiverName","receiverName = " + receiverName);
+        requestId = getIntent().getStringExtra("request_id");
 
         init();
 
     }
 
     private void init() {
+
+        AdapterChating adapterChating = new AdapterChating(mContext,null);
+        binding.rvChating.setAdapter(adapterChating);
 
         getAllMessages();
 
@@ -85,6 +87,33 @@ public class ShipChatingActivity
 
     }
 
+    private void sendMessageApi(String msg) {
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        HashMap<String,String> param = new HashMap<>();
+        param.put("sender_id",senderId);
+        param.put("receiver_id",receiverId);
+        param.put("request_id",requestId);
+        param.put("chat_message",msg);
+
+        Call<ResponseBody> call = api.insertChatBookingCall(param);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                getAllMessages();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+
+    }
+
     private void getAllMessages() {
         ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
@@ -92,8 +121,9 @@ public class ShipChatingActivity
         HashMap<String,String> param = new HashMap<>();
         param.put("sender_id",senderId);
         param.put("receiver_id",receiverId);
+        param.put("request_id",requestId);
 
-        Call<ResponseBody> call = api.getAllMessagesCall(param);
+        Call<ResponseBody> call = api.getChatBookingCall(param);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -144,6 +174,7 @@ public class ShipChatingActivity
     protected void onResume() {
         super.onResume();
 
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -175,8 +206,9 @@ public class ShipChatingActivity
         HashMap<String,String> param = new HashMap<>();
         param.put("sender_id",senderId);
         param.put("receiver_id",receiverId);
+        param.put("request_id",requestId);
 
-        Call<ResponseBody> call = api.getAllMessagesCall(param);
+        Call<ResponseBody> call = api.getChatBookingCall(param);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -235,36 +267,6 @@ public class ShipChatingActivity
         }
 
         return false;
-
-    }
-
-    private void sendMessageApi(String msg) {
-
-        Log.e("response","response = " + msg);
-        Log.e("response","message = " + msg);
-
-        HashMap<String,String> param = new HashMap<>();
-        param.put("sender_id",senderId);
-        param.put("receiver_id",receiverId);
-        param.put("chat_message",msg);
-
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.insertChatApiCall(param);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ProjectUtil.pauseProgressDialog();
-                Log.e("response","response = " + response);
-                getAllMessages();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ProjectUtil.pauseProgressDialog();
-            }
-
-        });
 
     }
 

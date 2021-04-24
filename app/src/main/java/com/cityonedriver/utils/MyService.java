@@ -139,6 +139,11 @@ public class MyService extends Service {
                             Log.e("sdfasfsfds","location lat = " + location.getLatitude());
                             Log.e("sdfasfsfds","location lon = " + location.getLongitude());
 
+                            Intent intent1 = new Intent("data_update_location1");
+                            intent1.putExtra("lat", String.valueOf(location.getLatitude()));
+                            intent1.putExtra("lon", String.valueOf(location.getLongitude()));
+                            sendBroadcast(intent1);
+
                             sharedPref = SharedPref.getInstance(MyService.this);
 
                             if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
