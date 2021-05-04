@@ -117,7 +117,7 @@ public class TaxiHomeAct extends
                     JSONObject jsonObject = new JSONObject(responseString);
 
                     if(jsonObject.getString("status").equals("1")) {
-                        if(status.equals("online")) {
+                        if(status.equals("ONLINE")) {
                             binding.switch4.setOn(true);
                         } else {
                             binding.switch4.setOn(false);
@@ -144,15 +144,15 @@ public class TaxiHomeAct extends
 
     private void init() {
 
-        onlineOfflineStatus("online");
+        onlineOfflineStatus("ONLINE");
 
         binding.switch4.setOnToggledListener(new OnToggledListener() {
             @Override
             public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
                 if(isOn) {
-                    onlineOfflineStatus("online");
+                    onlineOfflineStatus("ONLINE");
                 } else {
-                    onlineOfflineStatus("offline");
+                    onlineOfflineStatus("OFFLINE");
                 }
             }
         });
@@ -227,11 +227,11 @@ public class TaxiHomeAct extends
     }
 
     private void fetchLocation() {
-        if (ActivityCompat.checkSelfPermission (
-                mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission (
-                mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission (mContext,Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission (
+                mContext,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(TaxiHomeAct.this, new String[]
-                            { Manifest.permission.ACCESS_FINE_LOCATION },
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_CODE);
             return;
         }
@@ -250,7 +250,6 @@ public class TaxiHomeAct extends
                 }
             }
         });
-
     }
 
     private void setCurrentLocationMap(Location currentLocation) {

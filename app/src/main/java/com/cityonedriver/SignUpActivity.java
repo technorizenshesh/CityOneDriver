@@ -3,8 +3,8 @@ package com.cityonedriver;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -13,15 +13,20 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.cityonedriver.databinding.ActivitySignUpBinding;
 import com.cityonedriver.models.ModelLogin;
+import com.cityonedriver.shipping.activities.ShipReqActivity;
+import com.cityonedriver.stores.activities.StoreOrdersActivity;
+import com.cityonedriver.taxi.activities.AddCarAct;
+import com.cityonedriver.utils.Api;
+import com.cityonedriver.utils.ApiFactory;
 import com.cityonedriver.utils.AppConstant;
 import com.cityonedriver.utils.Compress;
+import com.cityonedriver.utils.MyService;
 import com.cityonedriver.utils.ProjectUtil;
 import com.cityonedriver.utils.SharedPref;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,12 +50,22 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Multipart;
+import retrofit2.http.Part;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -290,16 +305,21 @@ public class SignUpActivity extends AppCompatActivity {
                 params.put("mobile",binding.etPhone.getText().toString().trim());
                 params.put("address",binding.etAddress.getText().toString().trim());
                 params.put("land_mark",binding.etLandmark.getText().toString().trim());
-                params.put("lat", String.valueOf(latLng.latitude));
-                params.put("lon", String.valueOf(latLng.longitude));
+                params.put("lat",String.valueOf(latLng.latitude));
+                params.put("lon",String.valueOf(latLng.longitude));
                 params.put("register_id",registerId);
                 params.put("password",binding.pass.getText().toString().trim());
 
-                if(binding.spDriverType.getSelectedItemPosition() == 1){
+                String type = "";
+
+                if(binding.spDriverType.getSelectedItemPosition() == 1) {
+                    type = AppConstant.RES_DRIVER;
                     params.put("type",AppConstant.RES_DRIVER);
-                } else if(binding.spDriverType.getSelectedItemPosition() == 2){
+                } else if(binding.spDriverType.getSelectedItemPosition() == 2) {
+                    type = AppConstant.SH_DRIVER;
                     params.put("type",AppConstant.SH_DRIVER);
                 } else {
+                    type = AppConstant.TAXI_DRIVER;
                     params.put("type",AppConstant.TAXI_DRIVER);
                 }
 
@@ -312,10 +332,25 @@ public class SignUpActivity extends AppCompatActivity {
                 Log.e("fsfdsfdsfs","document1 = " + doc1Img);
                 Log.e("fsfdsfdsfs","document2 = " + doc2Img);
 
-               // signUpApi(params,fileHashMap);
+                // signUpApi(params,fileHashMap);
+
+//                signUpApi(
+//                         binding.etUsername.getText().toString().trim(),
+//                         binding.etEmail.getText().toString().trim(),
+//                         binding.etPhone.getText().toString().trim(),
+//                         binding.etAddress.getText().toString().trim(),
+//                         binding.etLandmark.getText().toString().trim(),
+//                         String.valueOf(latLng.latitude),
+//                         String.valueOf(latLng.longitude),
+//                         registerId,
+//                         binding.pass.getText().toString().trim(),
+//                         type,
+//                         fileImage,doc1Img,doc2Img
+//                        );
 
                 String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
-                        + binding.etPhone.getText().toString().trim()).replace(" ","");
+                        + binding.etPhone.getText().toString().trim())
+                        .replace(" ","");
 
                 startActivity(new Intent(mContext,VerifyOtpActivity.class)
                         .putExtra("resgisterHashmap" , params)
@@ -326,6 +361,134 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+//    private void signUpApi(HashMap<String,String> paramHash,HashMap<String,File> fileParamHash) {
+//
+//        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+//                .connectTimeout(120, TimeUnit.SECONDS)
+//                .readTimeout(120, TimeUnit.SECONDS)
+//                .writeTimeout(120, TimeUnit.SECONDS)
+//                .build();
+//
+//        AndroidNetworking.initialize(getApplicationContext(),okHttpClient);
+//
+//        Log.e("fsfdsfdsfs","paramHash = " + paramHash);
+//
+//        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+//        AndroidNetworking.upload(AppConstant.BASE_URL + "signup")
+//                .addMultipartParameter(paramHash)
+//                .addMultipartFile(fileParamHash)
+//                .setPriority(Priority.HIGH)
+//                .setTag("signup")
+//                .build()
+//                .getAsString(new StringRequestListener() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        ProjectUtil.pauseProgressDialog();
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(response);
+//
+//                            if(jsonObject.getString("status").equals("1")) {
+//
+//                                ModelLogin modelLogin = new Gson().fromJson(response, ModelLogin.class);
+//
+//                                Log.e("zdgfxsdgfxdg","response = " + response);
+//
+////                                sharedPref.setBooleanValue(AppConstant.IS_REGISTER,true);
+////                                sharedPref.setUserDetails(AppConstant.USER_DETAILS,modelLogin);
+////
+////                                ContextCompat.startForegroundService(mContext,new Intent(getApplicationContext(), MyService.class));
+////
+////                                if(AppConstant.RES_DRIVER.equals(modelLogin.getResult().getType())) {
+////                                    startActivity(new Intent(mContext, StoreOrdersActivity.class));
+////                                    finish();
+////                                } else if(AppConstant.SH_DRIVER.equals(modelLogin.getResult().getType())) {
+////                                    startActivity(new Intent(mContext, ShipReqActivity.class));
+////                                    finish();
+////                                } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
+////                                    startActivity(new Intent(mContext, AddCarAct.class));
+////                                    finish();
+////                                }
+//                            } else {
+//                                // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                        } catch (Exception e) {
+//                            Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            Log.e("Exception","Exception = " + e.getMessage());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError anError) {
+//                        ProjectUtil.pauseProgressDialog();
+//                    }
+//
+//                });
+//
+//    }
+
+    private void signUpApi(
+            String user_name,
+            String email,
+            String mobile,
+            String address,
+            String land_mark,
+            String lat,
+            String lon,
+            String register_id,
+            String password,
+            String type,
+            File image,
+            File doc1,
+            File doc2) {
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+
+        MultipartBody.Part requestImagePart = prepareMultipartImage(image,"image");
+        MultipartBody.Part doc1ImagePart = prepareMultipartImage(doc1,"document1");
+        MultipartBody.Part doc2ImagePart = prepareMultipartImage(doc2,"document2");
+
+        Call<ResponseBody> call = api.signUpApiCall(
+                prepareParamRequestBody(user_name),
+                prepareParamRequestBody(email),
+                prepareParamRequestBody(mobile),
+                prepareParamRequestBody(address),
+                prepareParamRequestBody(land_mark),
+                prepareParamRequestBody(lat),
+                prepareParamRequestBody(lon),
+                prepareParamRequestBody(register_id),
+                prepareParamRequestBody(password),
+                prepareParamRequestBody(type),
+                requestImagePart,doc1ImagePart,doc2ImagePart);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    Log.e("sdfasfasfasdfas","responseString = " + responseString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("sdfasfasfasdfas","Exception = " + t.getMessage());
+            }
+        });
+
+    }
+
+    private RequestBody prepareParamRequestBody(String value){
+        return RequestBody.create(MediaType.parse("multipart/form-data"),value);
+    }
+
+    private MultipartBody.Part prepareMultipartImage(File imageFile, String key) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"),imageFile);
+        return MultipartBody.Part.createFormData(key,imageFile.getName(),requestBody);
     }
 
     private boolean validateUsing_libphonenumber(String phNumber,String code) {

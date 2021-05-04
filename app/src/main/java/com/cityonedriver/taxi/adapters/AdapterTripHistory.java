@@ -54,6 +54,7 @@ public class AdapterTripHistory extends RecyclerView.Adapter<AdapterTripHistory.
         holder.binding.tvStatus.setText(data.getStatus());
 
         if("Finish".equals(status)) {
+            holder.binding.GoDetail.setVisibility(View.GONE);
             holder.binding.btPaySum.setVisibility(View.VISIBLE);
         } else {
             holder.binding.btPaySum.setVisibility(View.GONE);

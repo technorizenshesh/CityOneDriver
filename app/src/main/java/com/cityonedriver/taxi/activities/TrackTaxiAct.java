@@ -101,7 +101,7 @@ public class TrackTaxiAct extends AppCompatActivity
     SharedPref sharedPref;
     ModelLogin modelLogin;
     AlertDialog.Builder builder1;
-    String driverStatus = "",UserId="",UserName="",UserImage="",mobile = null;
+    String driverStatus="",UserId="",UserName="",UserImage="",mobile=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,18 +123,18 @@ public class TrackTaxiAct extends AppCompatActivity
         
     }
 
-    //    BroadcastReceiver locationReciever = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if(intent.getStringExtra("lat") != null) {
-//                currentLatLng = new LatLng(Double.parseDouble(intent.getStringExtra("lat"))
-//                        ,Double.parseDouble(intent.getStringExtra("lon")));
-//                if(carMarker != null) {
-//                    MarkerAnimation.animateMarkerToGB(carMarker, currentLatLng,
-//                            new LatLngInterpolator.Spherical());
-//                    animateCamera(currentLatLng);
-//                } else {
-//                    if(map!=null) {
+    //  BroadcastReceiver locationReciever = new BroadcastReceiver() {
+//      @Override
+//      public void onReceive(Context context, Intent intent) {
+//          if(intent.getStringExtra("lat") != null) {
+//              currentLatLng = new LatLng(Double.parseDouble(intent.getStringExtra("lat"))
+//                      ,Double.parseDouble(intent.getStringExtra("lon")));
+//              if(carMarker != null) {
+//                  MarkerAnimation.animateMarkerToGB(carMarker, currentLatLng,
+//                          new LatLngInterpolator.Spherical());
+//                  animateCamera(currentLatLng);
+//              } else {
+//                  if(map!=null) {
 //                        carMarker.setPosition(currentLatLng);
 //                        carMarker = map.addMarker(new MarkerOptions().title("Car")
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.car_top)));
@@ -481,6 +481,8 @@ public class TrackTaxiAct extends AppCompatActivity
                             binding.ivCancel.setVisibility(View.GONE);
                             binding.tvTitle.setText("Trip finish");
                             binding.btnEnd.setVisibility(View.GONE);
+                            startActivity(new Intent(mContext,TaxiHomeAct.class));
+                            finish();
 //                            startActivity(new Intent(TrackAct.this, PaymentSummary.class).putExtra("request_id",request_id)
 //                                    .putExtra("user_id",UserId).putExtra("userName",UserName));
 //                            finish();
