@@ -101,6 +101,7 @@ public class TrackTaxiAct extends AppCompatActivity
     SharedPref sharedPref;
     ModelLogin modelLogin;
     AlertDialog.Builder builder1;
+
     String driverStatus="",UserId="",UserName="",UserImage="",mobile=null;
 
     @Override
