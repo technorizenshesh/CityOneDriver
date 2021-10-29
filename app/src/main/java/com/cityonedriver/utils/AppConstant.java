@@ -2,7 +2,8 @@ package com.cityonedriver.utils;
 
 public interface AppConstant {
 
-    String BASE_URL = "https://shar-v.com/CityOne/webservice/";
+   // String BASE_URL = "https://shar-v.com/CityOne/webservice/";
+    String BASE_URL = "https://equipmeapp.co.nz/CityOne/webservice/";
     String IMAGE_URL = "https://www.pickpock.net/uploads/images/";
 
     String LOGIN_API = "login";

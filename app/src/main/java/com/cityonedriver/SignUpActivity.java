@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -75,14 +77,14 @@ public class SignUpActivity extends AppCompatActivity {
     ActivitySignUpBinding binding;
     private LatLng latLng;
     private String registerId;
-    File fileImage,doc1Img,doc2Img;
+    File fileImage, doc1Img, doc2Img;
     SharedPref sharedPref;
     ModelLogin modelLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         sharedPref = SharedPref.getInstance(mContext);
 
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -102,7 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
 
         if (!Places.isInitialized()) {
-            Places.initialize(mContext,getString(R.string.places_api_key));
+            Places.initialize(mContext, getString(R.string.places_api_key));
         }
 
         init();
@@ -119,7 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions (
+        ActivityCompat.requestPermissions(
                 this,
                 new String[] {
                         Manifest.permission.CAMERA,
@@ -128,11 +130,11 @@ public class SignUpActivity extends AppCompatActivity {
                 PERMISSION_ID
         );
     }
-    
+
     private void init() {
 
         binding.ivProfile.setOnClickListener(v -> {
-            if(checkPermissions()) {
+            if (checkPermissions()) {
                 final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
@@ -147,15 +149,15 @@ public class SignUpActivity extends AppCompatActivity {
                             String path = r.getPath();
                             fileImage = new File(path);
 
-                            Compress.get(mContext).setQuality(40)
+                            Compress.get(mContext).setQuality(70)
                                     .execute(new Compress.onSuccessListener() {
                                         @Override
                                         public void response(boolean status, String message, File file) {
-                                            Log.e("kjsgdfjklgdkjasf","file = " + file.length()/1024 + "kb      "+ message );
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
                                             fileImage = file;
                                             binding.ivProfile.setImageURI(r.getUri());
                                         }
-                            }).CompressedImage(path);
+                                    }).CompressedImage(path);
 
                         } else {
                             // Handle possible errors
@@ -172,7 +174,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.ivDoc1.setOnClickListener(v -> {
-            if(checkPermissions()) {
+            if (checkPermissions()) {
                 final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
@@ -187,15 +189,15 @@ public class SignUpActivity extends AppCompatActivity {
                             String path = r.getPath();
                             doc1Img = new File(path);
 
-                            Compress.get(mContext).setQuality(40)
+                            Compress.get(mContext).setQuality(70)
                                     .execute(new Compress.onSuccessListener() {
                                         @Override
                                         public void response(boolean status, String message, File file) {
-                                            Log.e("kjsgdfjklgdkjasf","file = " + file.length()/1024 + "kb      "+ message );
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
                                             doc1Img = file;
                                             binding.ivDoc1.setImageURI(r.getUri());
                                         }
-                            }).CompressedImage(path);
+                                    }).CompressedImage(path);
 
                         } else {
                             // Handle possible errors
@@ -212,7 +214,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.ivDoc2.setOnClickListener(v -> {
-            if(checkPermissions()) {
+            if (checkPermissions()) {
                 final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
@@ -227,15 +229,15 @@ public class SignUpActivity extends AppCompatActivity {
                             String path = r.getPath();
                             doc2Img = new File(path);
 
-                            Compress.get(mContext).setQuality(40)
+                            Compress.get(mContext).setQuality(70)
                                     .execute(new Compress.onSuccessListener() {
                                         @Override
                                         public void response(boolean status, String message, File file) {
-                                            Log.e("kjsgdfjklgdkjasf","file = " + file.length()/1024 + "kb      "+ message );
+                                            Log.e("kjsgdfjklgdkjasf", "file = " + file.length() / 1024 + "kb      " + message);
                                             doc2Img = file;
                                             binding.ivDoc2.setImageURI(r.getUri());
                                         }
-                            }).CompressedImage(path);
+                                    }).CompressedImage(path);
 
                         } else {
                             // Handle possible errors
@@ -260,7 +262,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.tvLogin.setOnClickListener(v -> {
-            startActivity(new Intent(mContext,LoginActivity.class));
+            startActivity(new Intent(mContext, LoginActivity.class));
         });
 
         binding.btSignUp.setOnClickListener(v -> {
@@ -268,99 +270,180 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.btSignUp.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(binding.etUsername.getText().toString().trim())) {
+            if (TextUtils.isEmpty(binding.etUsername.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_username), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_email_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etPhone.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etPhone.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_phone_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etAddress.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etAddress.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_select_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.etLandmark.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.etLandmark.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enterlandmark_add), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.pass.getText().toString().trim())){
+            } else if (TextUtils.isEmpty(binding.pass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
-            } else if(TextUtils.isEmpty(binding.confirmPass.getText().toString().trim())) {
+            } else if (TextUtils.isEmpty(binding.confirmPass.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_conf_pass), Toast.LENGTH_SHORT).show();
-            } else if(!(binding.pass.getText().toString().trim().length() > 4 )) {
+            } else if (!(binding.pass.getText().toString().trim().length() > 4)) {
                 Toast.makeText(mContext, getString(R.string.password_validation_text), Toast.LENGTH_SHORT).show();
-            } else if(!(binding.pass.getText().toString().trim().equals(binding.confirmPass.getText().toString().trim()))){
+            } else if (!(binding.pass.getText().toString().trim().equals(binding.confirmPass.getText().toString().trim()))) {
                 Toast.makeText(mContext, getString(R.string.password_not_match), Toast.LENGTH_SHORT).show();
-            } else if(!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
+            } else if (!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
-            } else if(!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ","")
-                    ,binding.ccp.getSelectedCountryCode())) {
+            } else if (!validateUsing_libphonenumber(binding.etPhone.getText().toString().replace(" ", "")
+                    , binding.ccp.getSelectedCountryCode())) {
                 Toast.makeText(mContext, getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
-            } else if(binding.spDriverType.getSelectedItemPosition() == 0) {
+            } else if (binding.spDriverType.getSelectedItemPosition() == 0) {
                 Toast.makeText(mContext, getString(R.string.please_select_driver_type), Toast.LENGTH_SHORT).show();
-            } else if(fileImage == null) {
+            } else if (fileImage == null) {
                 Toast.makeText(mContext, getString(R.string.please_upload_profile_image), Toast.LENGTH_SHORT).show();
-            } else if(doc1Img == null || doc2Img == null) {
+            } else if (doc1Img == null || doc2Img == null) {
                 Toast.makeText(mContext, getString(R.string.please_upload_both_doc), Toast.LENGTH_SHORT).show();
             } else {
-                HashMap<String,String> params = new HashMap<>();
+                if (TextUtils.isEmpty(binding.etReferralCode.getText().toString().trim())) {
+                    HashMap<String, String> params = new HashMap<>();
 
-                params.put("user_name",binding.etUsername.getText().toString().trim());
-                params.put("email",binding.etEmail.getText().toString().trim());
-                params.put("mobile",binding.etPhone.getText().toString().trim());
-                params.put("address",binding.etAddress.getText().toString().trim());
-                params.put("land_mark",binding.etLandmark.getText().toString().trim());
-                params.put("lat",String.valueOf(latLng.latitude));
-                params.put("lon",String.valueOf(latLng.longitude));
-                params.put("register_id",registerId);
-                params.put("password",binding.pass.getText().toString().trim());
+                    params.put("user_name", binding.etUsername.getText().toString().trim());
+                    params.put("email", binding.etEmail.getText().toString().trim());
+                    params.put("mobile", binding.etPhone.getText().toString().trim());
+                    params.put("address", binding.etAddress.getText().toString().trim());
+                    params.put("land_mark", binding.etLandmark.getText().toString().trim());
+                    params.put("lat", String.valueOf(latLng.latitude));
+                    params.put("lon", String.valueOf(latLng.longitude));
+                    params.put("register_id", registerId);
+                    params.put("referral_code", binding.etReferralCode.getText().toString().trim());
+                    params.put("password", binding.pass.getText().toString().trim());
 
-                String type = "";
+                    String type = "";
 
-                if(binding.spDriverType.getSelectedItemPosition() == 1) {
-                    type = AppConstant.RES_DRIVER;
-                    params.put("type",AppConstant.RES_DRIVER);
-                } else if(binding.spDriverType.getSelectedItemPosition() == 2) {
-                    type = AppConstant.SH_DRIVER;
-                    params.put("type",AppConstant.SH_DRIVER);
+                    if (binding.spDriverType.getSelectedItemPosition() == 1) {
+                        type = AppConstant.RES_DRIVER;
+                        params.put("type", AppConstant.RES_DRIVER);
+                    } else if (binding.spDriverType.getSelectedItemPosition() == 2) {
+                        type = AppConstant.SH_DRIVER;
+                        params.put("type", AppConstant.SH_DRIVER);
+                    } else {
+                        type = AppConstant.TAXI_DRIVER;
+                        params.put("type", AppConstant.TAXI_DRIVER);
+                    }
+
+                    HashMap<String, File> fileHashMap = new HashMap<>();
+                    fileHashMap.put("image", fileImage);
+                    fileHashMap.put("document1", doc1Img);
+                    fileHashMap.put("document2", doc2Img);
+
+                    Log.e("fsfdsfdsfs", "image = " + fileImage);
+                    Log.e("fsfdsfdsfs", "document1 = " + doc1Img);
+                    Log.e("fsfdsfdsfs", "document2 = " + doc2Img);
+
+                    String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
+                            + binding.etPhone.getText().toString().trim())
+                            .replace(" ", "");
+
+                    startActivity(new Intent(mContext, VerifyOtpActivity.class)
+                            .putExtra("resgisterHashmap", params)
+                            .putExtra("fileHashmap", fileHashMap)
+                            .putExtra("mobile", mobileWithCounCode)
+                    );
                 } else {
-                    type = AppConstant.TAXI_DRIVER;
-                    params.put("type",AppConstant.TAXI_DRIVER);
+                    checkReferCode(binding.etReferralCode.getText().toString().trim());
                 }
-
-                HashMap<String, File> fileHashMap = new HashMap<>();
-                fileHashMap.put("image",fileImage);
-                fileHashMap.put("document1",doc1Img);
-                fileHashMap.put("document2",doc2Img);
-
-                Log.e("fsfdsfdsfs","image = " + fileImage);
-                Log.e("fsfdsfdsfs","document1 = " + doc1Img);
-                Log.e("fsfdsfdsfs","document2 = " + doc2Img);
-
-                // signUpApi(params,fileHashMap);
-
-//                signUpApi(
-//                         binding.etUsername.getText().toString().trim(),
-//                         binding.etEmail.getText().toString().trim(),
-//                         binding.etPhone.getText().toString().trim(),
-//                         binding.etAddress.getText().toString().trim(),
-//                         binding.etLandmark.getText().toString().trim(),
-//                         String.valueOf(latLng.latitude),
-//                         String.valueOf(latLng.longitude),
-//                         registerId,
-//                         binding.pass.getText().toString().trim(),
-//                         type,
-//                         fileImage,doc1Img,doc2Img
-//                        );
-
-                String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
-                        + binding.etPhone.getText().toString().trim())
-                        .replace(" ","");
-
-                startActivity(new Intent(mContext,VerifyOtpActivity.class)
-                        .putExtra("resgisterHashmap" , params)
-                        .putExtra("fileHashmap" , fileHashMap)
-                        .putExtra("mobile" , mobileWithCounCode)
-                );
 
             }
         });
 
+    }
+
+    private void checkReferCode(String code) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("referral_code", code);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.checkReferApiCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        Log.e("afafasfasf", "stringResponse = " + stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+
+                            HashMap<String, String> params = new HashMap<>();
+
+                            params.put("user_name", binding.etUsername.getText().toString().trim());
+                            params.put("email", binding.etEmail.getText().toString().trim());
+                            params.put("mobile", binding.etPhone.getText().toString().trim());
+                            params.put("address", binding.etAddress.getText().toString().trim());
+                            params.put("land_mark", binding.etLandmark.getText().toString().trim());
+                            params.put("lat", String.valueOf(latLng.latitude));
+                            params.put("lon", String.valueOf(latLng.longitude));
+                            params.put("register_id", registerId);
+                            params.put("referral_code", binding.etReferralCode.getText().toString().trim());
+                            params.put("password", binding.pass.getText().toString().trim());
+
+                            String type = "";
+
+                            if (binding.spDriverType.getSelectedItemPosition() == 1) {
+                                type = AppConstant.RES_DRIVER;
+                                params.put("type", AppConstant.RES_DRIVER);
+                            } else if (binding.spDriverType.getSelectedItemPosition() == 2) {
+                                type = AppConstant.SH_DRIVER;
+                                params.put("type", AppConstant.SH_DRIVER);
+                            } else {
+                                type = AppConstant.TAXI_DRIVER;
+                                params.put("type", AppConstant.TAXI_DRIVER);
+                            }
+
+                            HashMap<String, File> fileHashMap = new HashMap<>();
+                            fileHashMap.put("image", fileImage);
+                            fileHashMap.put("document1", doc1Img);
+                            fileHashMap.put("document2", doc2Img);
+
+                            Log.e("fsfdsfdsfs", "image = " + fileImage);
+                            Log.e("fsfdsfdsfs", "document1 = " + doc1Img);
+                            Log.e("fsfdsfdsfs", "document2 = " + doc2Img);
+
+                            String mobileWithCounCode = (binding.ccp.getSelectedCountryCodeWithPlus()
+                                    + binding.etPhone.getText().toString().trim())
+                                    .replace(" ", "");
+
+                            startActivity(new Intent(mContext, VerifyOtpActivity.class)
+                                    .putExtra("resgisterHashmap", params)
+                                    .putExtra("fileHashmap", fileHashMap)
+                                    .putExtra("mobile", mobileWithCounCode)
+                            );
+
+                        } else {
+                            Toast.makeText(mContext, "Your referral code is wrong", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
     }
 
 //    private void signUpApi(HashMap<String,String> paramHash,HashMap<String,File> fileParamHash) {
@@ -443,12 +526,12 @@ public class SignUpActivity extends AppCompatActivity {
             File image,
             File doc1,
             File doc2) {
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
-        MultipartBody.Part requestImagePart = prepareMultipartImage(image,"image");
-        MultipartBody.Part doc1ImagePart = prepareMultipartImage(doc1,"document1");
-        MultipartBody.Part doc2ImagePart = prepareMultipartImage(doc2,"document2");
+        MultipartBody.Part requestImagePart = prepareMultipartImage(image, "image");
+        MultipartBody.Part doc1ImagePart = prepareMultipartImage(doc1, "document1");
+        MultipartBody.Part doc2ImagePart = prepareMultipartImage(doc2, "document2");
 
         Call<ResponseBody> call = api.signUpApiCall(
                 prepareParamRequestBody(user_name),
@@ -461,37 +544,38 @@ public class SignUpActivity extends AppCompatActivity {
                 prepareParamRequestBody(register_id),
                 prepareParamRequestBody(password),
                 prepareParamRequestBody(type),
-                requestImagePart,doc1ImagePart,doc2ImagePart);
+                requestImagePart, doc1ImagePart, doc2ImagePart);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ProjectUtil.pauseProgressDialog();
                 try {
                     String responseString = response.body().string();
-                    Log.e("sdfasfasfasdfas","responseString = " + responseString);
+                    Log.e("sdfasfasfasdfas", "responseString = " + responseString);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 ProjectUtil.pauseProgressDialog();
-                Log.e("sdfasfasfasdfas","Exception = " + t.getMessage());
+                Log.e("sdfasfasfasdfas", "Exception = " + t.getMessage());
             }
         });
 
     }
 
-    private RequestBody prepareParamRequestBody(String value){
-        return RequestBody.create(MediaType.parse("multipart/form-data"),value);
+    private RequestBody prepareParamRequestBody(String value) {
+        return RequestBody.create(MediaType.parse("multipart/form-data"), value);
     }
 
     private MultipartBody.Part prepareMultipartImage(File imageFile, String key) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"),imageFile);
-        return MultipartBody.Part.createFormData(key,imageFile.getName(),requestBody);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
+        return MultipartBody.Part.createFormData(key, imageFile.getName(), requestBody);
     }
 
-    private boolean validateUsing_libphonenumber(String phNumber,String code) {
+    private boolean validateUsing_libphonenumber(String phNumber, String code) {
 
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
         String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(code));
@@ -524,9 +608,10 @@ public class SignUpActivity extends AppCompatActivity {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 latLng = place.getLatLng();
                 try {
-                    String addresses = ProjectUtil.getCompleteAddressString(mContext,place.getLatLng().latitude, place.getLatLng().longitude);
+                    String addresses = ProjectUtil.getCompleteAddressString(mContext, place.getLatLng().latitude, place.getLatLng().longitude);
                     binding.etAddress.setText(addresses);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
             }
 
         }

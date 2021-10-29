@@ -54,6 +54,8 @@ public class ModelLogin {
 
         private String status;
 
+        private String my_referral_code;
+
         private String lat;
 
         private String lon;
@@ -95,6 +97,14 @@ public class ModelLogin {
         private String car_number;
 
         private String car_image;
+
+        public String getMy_referral_code() {
+            return my_referral_code;
+        }
+
+        public void setMy_referral_code(String my_referral_code) {
+            this.my_referral_code = my_referral_code;
+        }
 
         public void setId(String id) {
             this.id = id;

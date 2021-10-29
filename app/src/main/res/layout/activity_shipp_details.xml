@@ -427,7 +427,6 @@
                     android:layout_marginBottom="@dimen/_30sdp"
                     android:text="@string/bid_now" />
 
-
             </LinearLayout>
 
         </com.cityonedriver.utils.CustomScrollView>

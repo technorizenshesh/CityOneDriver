@@ -23,6 +23,8 @@ import com.cityonedriver.shipping.activities.ShipReqActivity;
 import com.cityonedriver.stores.activities.StoreOrdersActivity;
 import com.cityonedriver.taxi.activities.AddCarAct;
 import com.cityonedriver.taxi.activities.TaxiHomeAct;
+import com.cityonedriver.utils.Api;
+import com.cityonedriver.utils.ApiFactory;
 import com.cityonedriver.utils.AppConstant;
 import com.cityonedriver.utils.MyService;
 import com.cityonedriver.utils.ProjectUtil;
@@ -38,6 +40,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -45,6 +48,10 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VerifyOtpActivity extends AppCompatActivity {
 
@@ -197,7 +204,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
                             if(jsonObject.getString("status").equals("1")) {
 
-                                ModelLogin modelLogin = new Gson().fromJson(response, ModelLogin.class);
+                                modelLogin = new Gson().fromJson(response, ModelLogin.class);
 
                                 Log.e("zdgfxsdgfxdg","response = " + response);
 
@@ -206,16 +213,8 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
                                 ContextCompat.startForegroundService(mContext,new Intent(getApplicationContext(), MyService.class));
 
-                                if(AppConstant.RES_DRIVER.equals(modelLogin.getResult().getType())) {
-                                    startActivity(new Intent(mContext, StoreOrdersActivity.class));
-                                    finish();
-                                } else if(AppConstant.SH_DRIVER.equals(modelLogin.getResult().getType())) {
-                                    startActivity(new Intent(mContext, ShipReqActivity.class));
-                                    finish();
-                                } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
-                                    startActivity(new Intent(mContext, AddCarAct.class));
-                                    finish();
-                                }
+                                referApiCall();
+
                             } else {
                                 // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                             }
@@ -234,5 +233,58 @@ public class VerifyOtpActivity extends AppCompatActivity {
                 });
 
     }
+
+    private void referApiCall() {
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.referralCodeApi(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String stringResponse = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        Log.e("fasfasfas","stringResponse = " + stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+                            if(AppConstant.RES_DRIVER.equals(modelLogin.getResult().getType())) {
+                                startActivity(new Intent(mContext, StoreOrdersActivity.class));
+                                finish();
+                            } else if(AppConstant.SH_DRIVER.equals(modelLogin.getResult().getType())) {
+                                startActivity(new Intent(mContext, ShipReqActivity.class));
+                                finish();
+                            } else if(AppConstant.TAXI_DRIVER.equals(modelLogin.getResult().getType())) {
+                                startActivity(new Intent(mContext, AddCarAct.class));
+                                finish();
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
 
 }

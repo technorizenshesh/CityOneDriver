@@ -379,6 +379,10 @@
     <string name="estimated_trip_cost">Estimated Trip Cost</string>
     <string name="ok">Ok</string>
     <string name="see_pay_summ">See Payment Summary</string>
+    <string name="share_your_referral_code">Share your referral code to earn points</string>
     <string name="cancel_by_user">Cancelled by user</string>
+    <string name="referral_code_optional">Referral Code (Optional)</string>
+    <string name="cashback_nrefillss">CashBack Refills</string>
+    <string name="bonus_earned">Bonus Earned</string>
 
 </resources>

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cityonedriver.CashBackAct;
 import com.cityonedriver.DashboardActivity;
 import com.cityonedriver.LoginActivity;
 import com.cityonedriver.R;
@@ -78,6 +79,11 @@ public class StoreOrdersActivity extends AppCompatActivity {
 
         binding.navItems.tvLogout.setOnClickListener(v -> {
             logoutAppDialog();
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        binding.navItems.tvCashback.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, CashBackAct.class));
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         });
 

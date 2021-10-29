@@ -490,7 +490,7 @@ public class ShippDetailsActivity extends AppCompatActivity implements OnMapRead
 
             }
 
-            if(points.size() != 0){
+            if(points.size() != 0) {
                 gMap.addPolyline(lineOptions);
             }
 

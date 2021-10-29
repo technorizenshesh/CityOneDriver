@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.cityonedriver.CashBackAct;
 import com.cityonedriver.LoginActivity;
 import com.cityonedriver.R;
 import com.cityonedriver.databinding.ActivityTaxiHomeBinding;
@@ -170,6 +172,11 @@ public class TaxiHomeAct extends
 
         binding.navItems.tvTripHistory.setOnClickListener(v -> {
             startActivity(new Intent(mContext,TripHistoryAct.class));
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        binding.navItems.tvCashback.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, CashBackAct.class));
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         });
 

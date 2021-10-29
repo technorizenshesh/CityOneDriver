@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name=".utils.App"
@@ -22,15 +22,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CityOneDriver"
         android:usesCleartextTraffic="true">
-        <activity android:name=".taxi.activities.TripHistoryAct"></activity>
-        <activity android:name=".taxi.activities.TaxiChatingActivity" />
-        <activity android:name=".taxi.activities.TrackTaxiAct" />
-        <activity android:name=".taxi.activities.AddCarAct" />
-        <activity android:name=".taxi.activities.TaxiHomeAct" />
-        <activity android:name=".shipping.activities.ShipChatListActivity" />
-        <activity android:name=".shipping.activities.ShipChatingActivity" />
-        <activity android:name=".shipping.activities.MyDeliveryShipActivity" />
-        <activity android:name=".UpdateProfileActivity" />
+
+        <activity
+            android:name=".CashBackAct"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".taxi.activities.TripHistoryAct"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".taxi.activities.TaxiChatingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".taxi.activities.TrackTaxiAct"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".taxi.activities.AddCarAct"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".taxi.activities.TaxiHomeAct"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shipping.activities.ShipChatListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shipping.activities.ShipChatingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".shipping.activities.MyDeliveryShipActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UpdateProfileActivity"
+            android:screenOrientation="portrait"/>
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -129,9 +143,11 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api_key" />
+
     </application>
 
 </manifest>

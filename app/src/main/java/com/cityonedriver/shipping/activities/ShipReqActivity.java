@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cityonedriver.CashBackAct;
 import com.cityonedriver.LoginActivity;
 import com.cityonedriver.R;
 import com.cityonedriver.databinding.ActivityShipReqBinding;
@@ -48,7 +49,7 @@ public class ShipReqActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_ship_req);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_ship_req);
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         init();
@@ -68,6 +69,11 @@ public class ShipReqActivity extends AppCompatActivity {
 
         binding.navItems.tvMyTransport.setOnClickListener(v -> {
             startActivity(new Intent(mContext, MyDeliveryShipActivity.class));
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+        binding.navItems.tvCashback.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, CashBackAct.class));
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         });
 
@@ -127,13 +133,13 @@ public class ShipReqActivity extends AppCompatActivity {
     }
 
     private void getAllShipRequest() {
-        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
 
-        Log.e("sdfsdfdsfdsvf","user_id = " + modelLogin.getResult().getId());
+        Log.e("sdfsdfdsfdsvf", "user_id = " + modelLogin.getResult().getId());
 
-        HashMap<String,String> param = new HashMap<>();
-        param.put("user_id",modelLogin.getResult().getId());
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", modelLogin.getResult().getId());
 
         Call<ResponseBody> call = api.getAllShRequestApiCall(param);
         call.enqueue(new Callback<ResponseBody>() {
@@ -145,25 +151,25 @@ public class ShipReqActivity extends AppCompatActivity {
                     String responseString = response.body().string();
                     JSONObject jsonObject = new JSONObject(responseString);
 
-                    if(jsonObject.getString("status").equals("1")) {
+                    if (jsonObject.getString("status").equals("1")) {
 
                         modelShipRequest = new Gson().fromJson(responseString, ModelShipRequest.class);
 
-                        AdapterShipRequest adapterShipRequest = new AdapterShipRequest(mContext,modelShipRequest.getResult());
+                        AdapterShipRequest adapterShipRequest = new AdapterShipRequest(mContext, modelShipRequest.getResult());
                         binding.rvRequest.setAdapter(adapterShipRequest);
 
-                        Log.e("sdfsdfdsfdsvf","responseString = " + responseString);
+                        Log.e("sdfsdfdsfdsvf", "responseString = " + responseString);
 
                     } else {
                         Toast.makeText(mContext, getString(R.string.no_request_found), Toast.LENGTH_SHORT).show();
-                        AdapterShipRequest adapterShipRequest = new AdapterShipRequest(mContext,null);
+                        AdapterShipRequest adapterShipRequest = new AdapterShipRequest(mContext, null);
                         binding.rvRequest.setAdapter(adapterShipRequest);
                         // Toast.makeText(mContext, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
                     //Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Exception","Exception = " + e.getMessage());
+                    Log.e("Exception", "Exception = " + e.getMessage());
                 }
 
             }

@@ -389,8 +389,8 @@ public class TrackTaxiAct extends AppCompatActivity
 
         HashMap<String,String> param = new HashMap<>();
         param.put("driver_id",modelLogin.getResult().getId());
-        param.put("request_id", request_id);
-        param.put("status", "Cancel_by_driver");
+        param.put("request_id",request_id);
+        param.put("status","Cancel_by_driver");
 
         Call<ResponseBody> call = api.acceptCancelRequestForTaxi(param);
 

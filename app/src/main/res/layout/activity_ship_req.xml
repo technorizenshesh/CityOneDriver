@@ -25,7 +25,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:src="@drawable/ic_menu"/>
+                    android:src="@drawable/ic_menu" />
 
                 <TextView
                     android:layout_width="wrap_content"

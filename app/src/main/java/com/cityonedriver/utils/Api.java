@@ -120,6 +120,14 @@ public interface Api {
     Call<ResponseBody> changePassApiCall(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
+    @POST("referral_code")
+    Call<ResponseBody> referralCodeApi(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("check_referral_code")
+    Call<ResponseBody> checkReferApiCall(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
     @POST("add_bid")
     Call<ResponseBody> addBidApiCall(@FieldMap Map<String,String> params);
 
@@ -149,6 +157,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("driver_accept_and_Cancel_request")
     Call<ResponseBody>  acceptCancelRequestForTaxi(@FieldMap Map<String,String> params);
+
+    @FormUrlEncoded
+    @POST("get_referral_point")
+    Call<ResponseBody> getReferralPOints(@FieldMap Map<String,String> params);
 
     @FormUrlEncoded
     @POST("get_chat")
